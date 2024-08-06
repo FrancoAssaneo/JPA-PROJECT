@@ -313,3 +313,18 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
     ```
 
 4. Acceder a los endpoints a través de Postman o cualquier cliente REST.
+
+
+
+## Restaurar la base de datos
+
+Para restaurar la base de datos desde el archivo SQL exportado, sigue estos pasos:
+
+1. **Abrir una terminal y usar el siguiente comando:**
+    ```bash
+    mysql -u username -p database_name < path/to/database_export.sql
+    ```
+   Reemplaza `username` por tu nombre de usuario de MySQL, `database_name` por el nombre de tu base de datos, y `path/to/database_export.sql` por la ruta del archivo SQL.
+
+2. **Confirmar que la base de datos se ha restaurado correctamente:**
+   - Verifica que todas las tablas y datos estén presentes en la base de datos restaurada.
