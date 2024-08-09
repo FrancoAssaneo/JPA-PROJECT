@@ -1,5 +1,7 @@
 package com.jpa.project.service;
 
+import com.jpa.project.model.DTO.BuildingDTO;
+import com.jpa.project.model.DTO.DepartmentDTO;
 import com.jpa.project.model.DTO.UserDTO;
 import com.jpa.project.model.entities.Department;
 import com.jpa.project.model.entities.User;
@@ -21,6 +23,9 @@ public class UserService {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+    @Autowired
+    private DepartmentService departmentService;
+
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(this::convertToDTO)
@@ -38,13 +43,10 @@ public class UserService {
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
 
-        if (userDTO.getDepartmentId() != null) {
-            Optional<Department> existingDepartment = departmentRepository.findById(userDTO.getDepartmentId());
-            if (existingDepartment.isPresent()) {
-                user.setDepartment(existingDepartment.get());
-            } else {
-                throw new RuntimeException("Department not found with id " + userDTO.getDepartmentId());
-            }
+        if (userDTO.getDepartmentNumber() != null) {
+            Department department = departmentRepository.findByDoorNumber(userDTO.getDepartmentNumber())
+                    .orElseThrow(() -> new RuntimeException("Department not found with door number " + userDTO.getDepartmentNumber()));
+            user.setDepartment(department);
         }
 
         User savedUser = userRepository.save(user);
@@ -57,10 +59,10 @@ public class UserService {
                     user.setName(userDTO.getName());
                     user.setEmail(userDTO.getEmail());
 
-                    // Optionally, update the department as well
-                    if (userDTO.getDepartmentId() != null) {
-                        Optional<Department> existingDepartment = departmentRepository.findById(userDTO.getDepartmentId());
-                        existingDepartment.ifPresent(user::setDepartment);
+                    if (userDTO.getDepartmentNumber() != null) {
+                        Department department = departmentRepository.findByDoorNumber(userDTO.getDepartmentNumber())
+                                .orElseThrow(() -> new RuntimeException("Department not found with door number " + userDTO.getDepartmentNumber()));
+                        user.setDepartment(department);
                     }
 
                     User updatedUser = userRepository.save(user);
@@ -82,9 +84,11 @@ public class UserService {
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
+
         if (user.getDepartment() != null) {
-            userDTO.setDepartmentId(user.getDepartment().getId());
+            userDTO.setDepartmentNumber(user.getDepartment().getDoorNumber());
         }
+
         return userDTO;
     }
 }

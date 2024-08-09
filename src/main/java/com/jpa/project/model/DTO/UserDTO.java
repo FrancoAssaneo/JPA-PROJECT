@@ -1,21 +1,19 @@
 package com.jpa.project.model.DTO;
 
-import com.jpa.project.model.entities.Department;
-
 public class UserDTO {
 
     private Long id;
     private String name;
     private String email;
-    private Long departmentId;
+    private String departmentNumber;
 
     public UserDTO() {}
 
-    public UserDTO(Long id, String name, String email, Long departmentId) {
+    public UserDTO(Long id, String name, String email, String departmentNumber) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.departmentId = departmentId;
+        this.departmentNumber = departmentNumber;
     }
 
     public Long getId() {
@@ -42,12 +40,12 @@ public class UserDTO {
         this.email = email;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public String getDepartmentNumber() {
+        return departmentNumber;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartmentNumber(String departmentNumber) {
+        this.departmentNumber = departmentNumber;
     }
 
     @Override
@@ -56,7 +54,7 @@ public class UserDTO {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", departmentID=" + departmentId +
+                ", departmentNumber=" + departmentNumber +
                 '}';
     }
 }

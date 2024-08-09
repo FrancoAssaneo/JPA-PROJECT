@@ -7,16 +7,16 @@ public class BuildingDTO {
     private Long id;
     private String name;
     private String address;
-    private List<Long> departmentIds;
+    private List<DepartmentDTO> departmentList;
 
     public BuildingDTO() {
     }
 
-    public BuildingDTO(Long id, String name, String address, List<Long> departmentIds) {
+    public BuildingDTO(Long id, String name, String address, List<DepartmentDTO> departmentList) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.departmentIds = departmentIds;
+        this.departmentList = departmentList;
     }
 
     public Long getId() {
@@ -43,12 +43,12 @@ public class BuildingDTO {
         this.address = address;
     }
 
-    public List<Long> getDepartmentIds() {
-        return departmentIds;
+    public List<DepartmentDTO> getDepartmentList() {
+        return departmentList;
     }
 
-    public void setDepartmentIds(List<Long> departmentIds) {
-        this.departmentIds = departmentIds;
+    public void setDepartmentList(List<DepartmentDTO> departmentList) {
+        this.departmentList = departmentList;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class BuildingDTO {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", departmentIds=" + departmentIds +
+                ", departmentIds=" + departmentList +
                 '}';
     }
 }

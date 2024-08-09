@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
@@ -15,4 +16,6 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
     @Query("SELECT d.id as id, d.doorNumber as doorNumber FROM Department d")
     List<DepartmentProjection> findAllDepartmentIdsAndDoorNumbers();
+
+    Optional<Department> findByDoorNumber(String doorNumber);
 }

@@ -1,5 +1,7 @@
 package com.jpa.project.model.entities;
 
+import com.jpa.project.model.DTO.BuildingDTO;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

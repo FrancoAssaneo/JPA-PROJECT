@@ -1,5 +1,6 @@
 package com.jpa.project.service;
 
+import com.jpa.project.model.DTO.BuildingDTO;
 import com.jpa.project.model.DTO.DepartmentDTO;
 import com.jpa.project.model.DTO.UserDTO;
 import com.jpa.project.model.entities.Building;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,8 +27,8 @@ public class DepartmentService {
         Department department = new Department();
         department.setDoorNumber(departmentDTO.getDoorNumber());
         department.setFloor(departmentDTO.getFloor());
-        Building building = buildingRepository.findById(departmentDTO.getBuildingId())
-                .orElseThrow(() -> new RuntimeException("Building not found with id " + departmentDTO.getBuildingId()));
+        Building building = buildingRepository.findByName(departmentDTO.getBuildingName())
+                .orElseThrow(() -> new RuntimeException("Building not found with id " + departmentDTO.getBuildingName()));
         department.setBuilding(building);
         Department savedDepartment = departmentRepository.save(department);
         return convertToDTO(savedDepartment);
@@ -62,8 +62,8 @@ public class DepartmentService {
                 .map(department -> {
                     department.setDoorNumber(departmentDTO.getDoorNumber());
                     department.setFloor(departmentDTO.getFloor());
-                    Building building = buildingRepository.findById(departmentDTO.getBuildingId())
-                            .orElseThrow(() -> new RuntimeException("Building not found with id " + departmentDTO.getBuildingId()));
+                    Building building = buildingRepository.findByName(departmentDTO.getBuildingName())
+                            .orElseThrow(() -> new RuntimeException("Building not found with id " + departmentDTO.getBuildingName()));
                     department.setBuilding(building);
                     Department updatedDepartment = departmentRepository.save(department);
                     return convertToDTO(updatedDepartment);
@@ -79,14 +79,27 @@ public class DepartmentService {
         }
     }
 
-    private DepartmentDTO convertToDTO(Department department) {
+    public DepartmentDTO convertToDTO(Department department) {
         DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setId(department.getId());
         departmentDTO.setDoorNumber(department.getDoorNumber());
         departmentDTO.setFloor(department.getFloor());
-        departmentDTO.setUsers(convertToUserDTOList(department.getUsers()));
-        departmentDTO.setBuildingId(department.getBuilding().getId());
+        departmentDTO.setUsers(convertToSimplifiedUserDTOList(department.getUsers()));
+        departmentDTO.setBuildingName(department.getBuilding().getName());
         return departmentDTO;
+    }
+
+    private List<UserDTO> convertToSimplifiedUserDTOList(List<User> users) {
+        return users.stream()
+                .map(user -> {
+                    UserDTO userDTO = new UserDTO();
+                    userDTO.setId(user.getId());
+                    userDTO.setName(user.getName());
+                    userDTO.setEmail(user.getEmail());
+                    userDTO.setDepartmentNumber(user.getDepartment().getDoorNumber());
+                    return userDTO;
+                })
+                .collect(Collectors.toList());
     }
 
     private List<UserDTO> convertToUserDTOList(List<User> users) {
@@ -97,9 +110,23 @@ public class DepartmentService {
                     userDTO.setName(user.getName());
                     userDTO.setEmail(user.getEmail());
                     if (user.getDepartment() != null) {
-                        userDTO.setDepartmentId(user.getDepartment().getId());
+                        userDTO.setDepartmentNumber(user.getDepartment().getDoorNumber());
                     }
                     return userDTO;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<DepartmentDTO> convertToDTOList(List<Department> departments) {
+        return departments.stream()
+                .map(department -> {
+                    DepartmentDTO departmentDTO = new DepartmentDTO();
+                    departmentDTO.setId(department.getId());
+                    departmentDTO.setDoorNumber(department.getDoorNumber());
+                    departmentDTO.setFloor(department.getFloor());
+                    departmentDTO.setUsers(convertToUserDTOList(department.getUsers()));
+                    departmentDTO.setBuildingName(department.getBuilding().getName());
+                    return departmentDTO;
                 })
                 .collect(Collectors.toList());
     }

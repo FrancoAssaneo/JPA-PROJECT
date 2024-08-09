@@ -28,7 +28,7 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
       {
           "name": "John Doe",
           "email": "john.doe@example.com",
-          "departmentId": 1
+          "departmentNumber": "1A"
       }
       ```
     - **Response**:
@@ -37,7 +37,7 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
           "id": 1,
           "name": "John Doe",
           "email": "john.doe@example.com",
-          "departmentId": 1
+          "departmentNumber": "1A"
       }
       ```
 
@@ -50,7 +50,7 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
               "id": 1,
               "name": "John Doe",
               "email": "john.doe@example.com",
-              "departmentId": 1
+              "departmentNumber": "1A"
           }
       ]
       ```
@@ -63,7 +63,7 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
           "id": 1,
           "name": "John Doe",
           "email": "john.doe@example.com",
-          "departmentId": 1
+          "departmentNumber": "1A"
       }
       ```
 
@@ -74,7 +74,7 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
       {
           "name": "Jane Doe",
           "email": "jane.doe@example.com",
-          "departmentId": 2
+          "departmentNumber": "2A"
       }
       ```
     - **Response**:
@@ -83,7 +83,7 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
           "id": 1,
           "name": "Jane Doe",
           "email": "jane.doe@example.com",
-          "departmentId": 2
+          "departmentNumber": "2A"
       }
       ```
 
@@ -99,7 +99,15 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
       {
           "doorNumber": "101A",
           "floor": "1",
-          "buildingId": 1
+           "users": [
+            {
+                "id": 8,
+                "name": "Franco Assaneo",
+                "email": "franco@me.com",
+                "departmentNumber": "1A"
+            }
+        ],
+        "buildingName": "Edificio Norte"
       }
       ```
     - **Response**:
@@ -108,7 +116,15 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
           "id": 1,
           "doorNumber": "101A",
           "floor": "1",
-          "buildingId": 1
+           "users": [
+            {
+                "id": 8,
+                "name": "Franco Assaneo",
+                "email": "franco@me.com",
+                "departmentNumber": "1A"
+            }
+        ],
+        "buildingName": "Edificio Norte"
       }
       ```
 
@@ -121,7 +137,15 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
               "id": 1,
               "doorNumber": "101A",
               "floor": "1",
-              "buildingId": 1 
+               "users": [
+            {
+                "id": 8,
+                "name": "Franco Assaneo",
+                "email": "franco@me.com",
+                "departmentNumber": "1A"
+            }
+        ],
+        "buildingName": "Edificio Norte"
           }
       ]
       ```
@@ -134,7 +158,15 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
           "id": 1,
           "doorNumber": "101A",
           "floor": "1",
-          "buildingId": 1
+           "users": [
+            {
+                "id": 8,
+                "name": "Franco Assaneo",
+                "email": "franco@me.com",
+                "departmentNumber": "1A"
+            }
+        ],
+        "buildingName": "Edificio Norte"
       }
       ```
 
@@ -145,7 +177,15 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
       {
           "doorNumber": "202B",
           "floor": "2",
-          "buildingId": 2
+           "users": [
+            {
+                "id": 8,
+                "name": "Franco Assaneo",
+                "email": "franco@me.com",
+                "departmentNumber": "1A"
+            }
+        ],
+        "buildingName": "Edificio Norte 2"
       }
       ```
     - **Response**:
@@ -154,7 +194,15 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
           "id": 1,
           "doorNumber": "202B",
           "floor": "2",
-          "buildingId": 2 
+           "users": [
+            {
+                "id": 8,
+                "name": "Franco Assaneo",
+                "email": "franco@me.com",
+                "departmentNumber": "1A"
+            }
+        ],
+        "buildingName": "Edificio Norte 2"
       }
       ```
 
@@ -170,7 +218,15 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
               "id": 1,
               "doorNumber": "101A",
               "floor": "1",
-              "buildingId": 1 
+               "users": [
+            {
+                "id": 8,
+                "name": "Franco Assaneo",
+                "email": "franco@me.com",
+                "departmentNumber": "1A"
+            }
+        ],
+        "buildingName": "Edificio Norte"
           }
       ]
       ```
@@ -183,24 +239,19 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
     - **Request Body**:
       ```json
       {
-          "name": "Building 1",
-          "address": "123 Main St",
-          "departmentIds": [1, 2]
+          "name": "Edificio Norte",
+          "address": "456 Avenida Norte"
       }
       ```
-    - **Response**:
-      ```json
-      {
-          "id": 1,
-          "name": "Building 1",
-          "address": "123 Main St",
-          "departmentsIds": [
-              1,
-              2,
-              3   
-          ]
-      }
-      ```
+      - **Response**:
+        ```json
+        {
+           "id": 1,
+           "name": "Edificio Norte",
+           "address": "456 Avenida Norte",
+           "departmentList": []
+        }
+        ```
 
 2. **Obtener todos los edificios**
     - **Endpoint**: `GET /buildings`
@@ -211,19 +262,23 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
               "id": 1,
               "name": "Building 1",
               "address": "123 Main St",
-              "departments": [
-                  {
-                      "id": 1,
-                      "doorNumber": "101A",
-                      "floor": "1"
-                  },
-                  {
-                      "id": 2,
-                      "doorNumber": "202B",
-                      "floor": "2"
-                  }
-              ]
-          }
+              "departmentList": [
+              {
+                "id": 9,
+                "doorNumber": "1A",
+                "floor": "1",
+                "users": [
+                    {
+                        "id": 8,
+                        "name": "Franco Assaneo",
+                        "email": "franco@me.com",
+                        "departmentNumber": "1A"
+                    }
+                ],
+                "buildingName": "Edificio Norte"
+              }
+          ]
+        }
       ]
       ```
 
@@ -231,23 +286,29 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
     - **Endpoint**: `GET /buildings/{id}`
     - **Response**:
       ```json
-      {
-          "id": 1,
-          "name": "Building 1",
-          "address": "123 Main St",
-          "departments": [
+      [
+          {
+              "id": 1,
+              "name": "Building 1",
+              "address": "123 Main St",
+              "departmentList": [
               {
-                  "id": 1,
-                  "doorNumber": "101A",
-                  "floor": "1"
-              },
-              {
-                  "id": 2,
-                  "doorNumber": "202B",
-                  "floor": "2"
+                "id": 9,
+                "doorNumber": "1A",
+                "floor": "1",
+                "users": [
+                    {
+                        "id": 8,
+                        "name": "Franco Assaneo",
+                        "email": "franco@me.com",
+                        "departmentNumber": "1A"
+                    }
+                ],
+                "buildingName": "Edificio Norte"
               }
           ]
-      }
+        }
+      ]
       ```
 
 4. **Actualizar un edificio**
@@ -257,7 +318,7 @@ Este proyecto es una prueba de concepto para demostrar el uso de JPA (Java Persi
       {
           "name": "Building 2",
           "address": "456 Main St",
-          "departmentIds": [3, 4]
+          "departments": [3, 4]
       }
       ```
     - **Response**:

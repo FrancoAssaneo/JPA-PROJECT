@@ -1,8 +1,8 @@
 package com.jpa.project.service;
 
 import com.jpa.project.model.DTO.BuildingDTO;
+import com.jpa.project.model.DTO.DepartmentDTO;
 import com.jpa.project.model.entities.Building;
-import com.jpa.project.model.entities.Department;
 import com.jpa.project.repository.BuildingRepository;
 import com.jpa.project.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,8 @@ public class BuildingService {
     private BuildingRepository buildingRepository;
     @Autowired
     private DepartmentRepository departmentRepository;
+    @Autowired
+    private DepartmentService departmentService;
 
     public List<BuildingDTO> getAllBuildings() {
         return buildingRepository.findAll().stream()
@@ -33,7 +35,7 @@ public class BuildingService {
 
     public BuildingDTO createBuilding(BuildingDTO buildingDTO) {
         Building building = convertToEntity(buildingDTO);
-        building.setDepartments(departmentRepository.findAllById(buildingDTO.getDepartmentIds()));
+        building.setDepartments(departmentRepository.findAllById(getDepartmentIds(buildingDTO.getDepartmentList())));
         Building savedBuilding = buildingRepository.save(building);
         return convertToDTO(savedBuilding);
     }
@@ -43,7 +45,7 @@ public class BuildingService {
                 .map(building -> {
                     building.setName(buildingDTO.getName());
                     building.setAddress(buildingDTO.getAddress());
-                    building.setDepartments(departmentRepository.findAllById(buildingDTO.getDepartmentIds()));
+                    building.setDepartments(departmentRepository.findAllById(getDepartmentIds(buildingDTO.getDepartmentList())));
                     Building updatedBuilding = buildingRepository.save(building);
                     return convertToDTO(updatedBuilding);
                 })
@@ -59,7 +61,7 @@ public class BuildingService {
         buildingDTO.setId(building.getId());
         buildingDTO.setName(building.getName());
         buildingDTO.setAddress(building.getAddress());
-        buildingDTO.setDepartmentIds(building.getDepartments().stream().map(Department::getId).collect(Collectors.toList()));
+        buildingDTO.setDepartmentList(departmentService.convertToDTOList(building.getDepartments()));
         return buildingDTO;
     }
 
@@ -67,9 +69,13 @@ public class BuildingService {
         Building building = new Building();
         building.setName(buildingDTO.getName());
         building.setAddress(buildingDTO.getAddress());
-        if (buildingDTO.getDepartmentIds() != null) {
-            building.setDepartments(departmentRepository.findAllById(buildingDTO.getDepartmentIds()));
+        if (buildingDTO.getDepartmentList() != null) {
+            building.setDepartments(departmentRepository.findAllById(getDepartmentIds(buildingDTO.getDepartmentList())));
         }
         return building;
+    }
+
+    private List<Long> getDepartmentIds(List<DepartmentDTO> departments) {
+        return departments.stream().map(DepartmentDTO::getId).collect(Collectors.toList());
     }
 }
